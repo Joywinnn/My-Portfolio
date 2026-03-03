@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cosmic Portfolio</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg: #060b1a;
+  --bg2: #0b132b;
+  --cyan: #00f5ff;
+  --purple: #8a2be2;
+  --text: #e6f1ff;
+  --muted: #94a3b8;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(ellipse at bottom, var(--bg2) 0%, var(--bg) 100%);
+  color: var(--text);
+  overflow-x:hidden;
+}
+
+/* ---------- STAR FIELD ---------- */
+
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:-1;
+}
+
+/* ---------- GLOBAL ---------- */
+
+section{
+  padding:100px 10%;
+  max-width:1200px;
+  margin:auto;
+}
+
+h1,h2,h3{
+  font-weight:600;
+}
+
+h2{
+  font-size:32px;
+  margin-bottom:40px;
+}
+
+p{
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.btn{
+  display:inline-block;
+  padding:14px 28px;
+  margin-top:30px;
+  border-radius:40px;
+  border:1px solid var(--cyan);
+  color:var(--cyan);
+  text-decoration:none;
+  transition:all .4s ease-in-out;
+}
+
+.btn:hover{
+  background:var(--cyan);
+  color:#000;
+  box-shadow:0 0 20px var(--cyan);
+}
+
+/* ---------- HERO ---------- */
+
+.hero{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  animation:fadeIn 2s ease-in-out;
+}
+
+.hero h1{
+  font-size:48px;
+  margin-bottom:10px;
+}
+
+.hero span {
+  background: linear-gradient(90deg, var(--cyan), var(--purple));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* ---------- ABOUT ---------- */
+
+.about{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+}
+
+.skills-icons{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.skill-icon{
+  padding:14px 20px;
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:30px;
+  transition:.3s ease;
+}
+
+.skill-icon:hover{
+  border-color:var(--cyan);
+  box-shadow:0 0 10px var(--cyan);
+}
+
+/* ---------- PROJECTS ---------- */
+
+.projects-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:40px;
+}
+
+.project-card{
+  padding:40px;
+  border-radius:50%;
+  height:280px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  text-align:center;
+  background:rgba(255,255,255,0.03);
+  transition:all .4s ease;
+}
+
+.project-card:hover{
+  box-shadow:0 0 25px var(--purple);
+  transform:translateY(-10px);
+}
+
+.project-card a{
+  color:var(--cyan);
+  text-decoration:none;
+  margin-top:10px;
+}
+
+/* ---------- SKILLS ---------- */
+
+.skills-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:30px;
+}
+
+.progress{
+  background:rgba(255,255,255,0.05);
+  border-radius:30px;
+  overflow:hidden;
+  height:8px;
+  margin-top:10px;
+}
+
+.progress-bar{
+  height:100%;
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  width:0;
+  transition:width 2s ease-in-out;
+}
+
+/* ---------- CONTACT ---------- */
+
+.contact form{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+input, textarea{
+  padding:14px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.1);
+  background:transparent;
+  color:var(--text);
+  outline:none;
+  transition:.3s ease;
+}
+
+input:focus, textarea:focus{
+  border-color:var(--purple);
+  box-shadow:0 0 10px var(--purple);
+}
+
+.socials{
+  margin-top:30px;
+  display:flex;
+  gap:20px;
+}
+
+.socials a{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  border:1px solid var(--cyan);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--cyan);
+  text-decoration:none;
+  transition:.3s ease;
+}
+
+.socials a:hover{
+  box-shadow:0 0 15px var(--cyan);
+}
+
+/* ---------- MOBILE ---------- */
+
+@media(max-width:768px){
+  .about{
+    grid-template-columns:1fr;
+  }
+  .hero h1{
+    font-size:34px;
+  }
+}
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Hi, I'm <span>Your Name</span></h1>
+  <p>Frontend Developer & UI Designer</p>
+  <a href="#projects" class="btn">View Projects</a>
+</section>
+
+<!-- ABOUT -->
+<section>
+  <h2>About Me</h2>
+  <div class="about">
+    <div>
+      <p>
+        I build clean, high-performance digital experiences.
+        Passionate about minimal design, smooth animations,
+        and writing optimized code.
+      </p>
+    </div>
+    <div class="skills-icons">
+      <div class="skill-icon">HTML</div>
+      <div class="skill-icon">CSS</div>
+      <div class="skill-icon">JavaScript</div>
+      <div class="skill-icon">Flutter</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <h2>Projects</h2>
+  <div class="projects-grid">
+    <div class="project-card">
+      <h3>Galaxy App</h3>
+      <p>Minimal productivity app.</p>
+      <p><small>Flutter • Firebase</small></p>
+      <a href="#">Live Demo</a>
+    </div>
+    <div class="project-card">
+      <h3>Cosmic UI</h3>
+      <p>Modern dashboard interface.</p>
+      <p><small>React • Tailwind</small></p>
+      <a href="#">Live Demo</a>
+    </div>
+    <div class="project-card">
+      <h3>Orbit Portfolio</h3>
+      <p>Personal website template.</p>
+      <p><small>HTML • CSS</small></p>
+      <a href="#">Live Demo</a>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section>
+  <h2>Skills</h2>
+  <div class="skills-grid">
+    <div>
+      HTML
+      <div class="progress"><div class="progress-bar" style="width:90%"></div></div>
+    </div>
+    <div>
+      CSS
+      <div class="progress"><div class="progress-bar" style="width:85%"></div></div>
+    </div>
+    <div>
+      JavaScript
+      <div class="progress"><div class="progress-bar" style="width:80%"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact">
+  <h2>Contact</h2>
+  <form>
+    <input type="text" placeholder="Your Name" required>
+    <input type="email" placeholder="Your Email" required>
+    <textarea rows="4" placeholder="Message"></textarea>
+    <button class="btn">Send Message</button>
+  </form>
+
+  <div class="socials">
+    <a href="#">L</a>
+    <a href="#">G</a>
+    <a href="#">T</a>
+  </div>
+</section>
+
+<script>
+/* ---------- LIGHTWEIGHT STARFIELD ---------- */
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+
+let stars = [];
+let numStars = 120;
+
+function resize(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+for(let i=0;i<numStars;i++){
+  stars.push({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    radius: Math.random()*1.2,
+    speed: Math.random()*0.2
+  });
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = "white";
+  stars.forEach(star=>{
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.radius, 0, Math.PI*2);
+    ctx.fill();
+    star.y += star.speed;
+    if(star.y > canvas.height) star.y = 0;
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>
